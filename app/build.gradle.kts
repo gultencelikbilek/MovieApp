@@ -77,11 +77,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.google.accompanist:accompanist-coil:0.10.0")
 
-    //viewmodel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-
-    //navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    // Compose dependencies
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-beta01")
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha09")
+    implementation ("androidx.compose.material:material-icons-extended:1.0.2")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0-alpha03")
 
     //Hilt
     implementation ("androidx.hilt:hilt-navigation-fragment:1.2.0")

@@ -6,8 +6,8 @@ import com.example.movieapp.domain.repository.IMovieRepository
 import retrofit2.Response
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(private val movieApiService: MovieApiService): IMovieRepository {
+class MovieRepositoryImpl @Inject constructor(): IMovieRepository {
     override suspend fun getMovieList(page: Int): Response<MoviesList> {
-        return movieApiService.getMovieList(page)
+        return AppModule.api.getMovieList(page)
     }
 }

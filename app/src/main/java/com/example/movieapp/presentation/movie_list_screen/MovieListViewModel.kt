@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movieapp.data.network.repoImpl.MovieRepositoryImpl
 import com.example.movieapp.data.usecase.GetMovieListUseCase
 import com.example.movieapp.domain.model.Data
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,10 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
-    private val getMovieListUseCase: GetMovieListUseCase
-) : ViewModel() {
+class MovieListViewModel @Inject constructor() : ViewModel() {
 
+    val repositoryImpl = MovieRepositoryImpl()
+    val getMovieListUseCase = GetMovieListUseCase(repositoryImpl)
     var state by mutableStateOf(ScreenState())
 
     init {
