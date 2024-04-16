@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.movieapp.presentation.home_screen.HomeScreen
+import com.example.movieapp.presentation.movie_list_screen.MovieListScreen
 import com.example.movieapp.presentation.movie_list_screen.MovieListViewModel
 import com.example.movieapp.ui.theme.MovieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,5 +33,12 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+@Preview
+@Composable
+fun Hello() {
+    MovieAppTheme {
+      MovieListScreen()
     }
 }
