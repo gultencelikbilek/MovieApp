@@ -51,7 +51,7 @@ import com.example.movieapp.domain.model.Data
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MovieListScreen(
-
+    navController: NavHostController
 ) {
 
     val movieListViewModel: MovieListViewModel = hiltViewModel()
@@ -70,7 +70,7 @@ fun MovieListScreen(
                     .background(Color.Transparent),
                 content = {
                     items(state.movies.size) {
-                        MovieItemUi(itemIndex = it, movieList = state.movies)
+                        MovieItemUi(itemIndex = it, movieList = state.movies,navController)
                     }
                 }
             )
@@ -81,17 +81,15 @@ fun MovieListScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieItemUi(itemIndex: Int, movieList: List<Data>) {
+fun MovieItemUi(itemIndex: Int, movieList: List<Data>,navController: NavHostController) {
     Card(
         Modifier
             .wrapContentSize()
             .padding(10.dp)
-            .clickable { },
+            .clickable {
+                navController.navigate("movie_detail_screen/${movieList[itemIndex].id}")
+            },
         elevation = CardDefaults.cardElevation(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Blue,
-            contentColor = Color.Red
-        )
     ) {
         Box(
             modifier = Modifier

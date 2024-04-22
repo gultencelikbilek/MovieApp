@@ -15,9 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.presentation.home_screen.HomeScreen
+import com.example.movieapp.presentation.movie_details_screen.MovieDetailScreen
 import com.example.movieapp.presentation.movie_list_screen.MovieListScreen
 import com.example.movieapp.presentation.movie_list_screen.MovieListViewModel
+import com.example.movieapp.presentation.navigation.NavigationUI
 import com.example.movieapp.ui.theme.MovieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,15 +44,8 @@ class MainActivity : ComponentActivity() {
                             )
                         )
                     )){
-                    MovieListScreen()
+                   NavigationUI()
                 }
-
-             //   Surface(
-             //       modifier = Modifier.fillMaxSize(),
-             //       color = MaterialTheme.colorScheme.background
-             //   ) {
-             //       Text(text = "${viewmodel.state.movies}")
-             //   }
             }
         }
     }

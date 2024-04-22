@@ -39,7 +39,7 @@ import com.example.movieapp.R
 
 @Composable
 fun HomeScreen(
-    //navHostController: NavHostController
+    navHostController: NavHostController
 ) {
     val modifier = Modifier
     Box(modifier = Modifier.fillMaxSize()) {
@@ -73,7 +73,9 @@ fun HomeScreen(
             )
 
             Button(
-                onClick = {},
+                onClick = {
+                      navHostController.navigate("movie_list_screen")
+                },
                 modifier
                     .padding(bottom = 55.dp, start = 20.dp, end = 20.dp)
                     .fillMaxWidth()
@@ -103,7 +105,6 @@ fun HomeScreen(
                     style = TextStyle(
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
-                        //   fontFamily = FontFamily(Font(R.font.x)),
                         textAlign = TextAlign.Center
                     )
                 )
