@@ -41,9 +41,12 @@ import com.example.movieapp.R
 import com.example.movieapp.domain.model.Details
 
 @Composable
-fun MovieDetailScreen(id: Int) {
+fun MovieDetailScreen(
+    id: Int,
+    movieDetailsViewModel: MovieDetailsViewModel = hiltViewModel()
+) {
 
-    val movieDetailsViewModel: MovieDetailsViewModel = hiltViewModel()
+
     movieDetailsViewModel.getDetailId(id)
     val state = movieDetailsViewModel.state
     val details = state.detailsData

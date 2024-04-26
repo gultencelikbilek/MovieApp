@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor() : ViewModel() {
+class MovieListViewModel @Inject constructor(
+    val getMovieListUseCase: GetMovieListUseCase
+) : ViewModel() {
 
-    val repositoryImpl = MovieRepositoryImpl()
-    val getMovieListUseCase = GetMovieListUseCase(repositoryImpl)
     var state by mutableStateOf(ScreenState())
 
     init {

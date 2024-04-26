@@ -51,10 +51,10 @@ import com.example.movieapp.domain.model.Data
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MovieListScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    movieListViewModel: MovieListViewModel = hiltViewModel()
 ) {
 
-    val movieListViewModel: MovieListViewModel = hiltViewModel()
     val state = movieListViewModel.state
     Scaffold(
         modifier = Modifier.background(Color.Transparent),
