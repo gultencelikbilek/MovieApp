@@ -21,18 +21,18 @@ fun NavigationUI() {
         composable("movie_list_screen"){
             MovieListScreen(navController = navController)
         }
-      // composable("movie_detail_screen/{movie_id}",
-      //     arguments = listOf(
-      //         navArgument(
-      //             name = "movie_id"
-      //         ){
-      //             type = NavType.IntType
-      //         }
-      //     )
-      // ){id ->
-      //     id.arguments?.getInt("movie_id")?.let { id1->
-      //         MovieDetailScreen(id = id1)
-      //     }
-      // }
+         composable("movie_detail_screen/{movie_id}",
+             arguments = listOf(
+                 navArgument(
+                     name = "movie_id"
+                 ){
+                     type = NavType.IntType
+                 }
+             )
+         ){id ->
+             id.arguments?.getInt("movie_id")?.let { id1->
+                 MovieDetailScreen(id = id1)
+             }
+         }
     }
 }

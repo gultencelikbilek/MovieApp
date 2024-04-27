@@ -1,7 +1,7 @@
 package com.example.movieapp.data.network.repoImpl
 
-import AppModule
-import com.example.movieapp.data.network.MovieApiService
+
+import com.example.movieapp.data.di.AppModule
 import com.example.movieapp.domain.model.Details
 import com.example.movieapp.domain.model.MoviesList
 import com.example.movieapp.domain.repository.IMovieRepository

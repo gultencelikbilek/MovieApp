@@ -1,4 +1,4 @@
-package com.example.movieapp.domain.di
+package com.example.movieapp.data.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

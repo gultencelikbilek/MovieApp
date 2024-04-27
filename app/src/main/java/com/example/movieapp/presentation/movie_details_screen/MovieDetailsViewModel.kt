@@ -11,9 +11,10 @@ import com.example.movieapp.domain.model.Data
 import com.example.movieapp.domain.model.Details
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
-class MovieDetailsViewModel(
+class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
 ) :ViewModel(){
 

@@ -1,5 +1,6 @@
 package com.example.movieapp.presentation.movie_details_screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,8 +49,10 @@ fun MovieDetailScreen(
 
 
     movieDetailsViewModel.getDetailId(id)
+    Log.d("id:",id.toString())
     val state = movieDetailsViewModel.state
     val details = state.detailsData
+    Log.d("details:",details.toString())
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -77,14 +80,13 @@ fun MovieDetailScreen(
             ImageRow(details = details)
         }
     }
-
 }
 
 @Composable
 fun ImageRow(details: Details) {
     if (details.images.isNotEmpty()) {
         LazyRow {
-            items(details.images.toList().size) {
+            items(details.images.size) {
                 AsyncImage(
                     model = details.images[it], contentDescription = "",
                     Modifier
@@ -108,7 +110,7 @@ fun TextBuilderList(icon: ImageVector, title: String, details: Details) {
         )
         if (details.genres.isNotEmpty()) {
             LazyRow {
-                items(details.genres.toList().size) {
+                items(details.genres.size) {
                     Text(
                         text = details.genres[it],
                         Modifier.padding(start = 10.dp),
@@ -144,8 +146,16 @@ fun TextBuilder(icon: ImageVector, title: String, bodyText: String) {
 @Composable
 fun Raiting(details: Details, modifier: Modifier) {
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-        Icon(imageVector = Icons.Filled.Star, contentDescription = "Star", tint = Color.White)
-        Text(text = details.imdb_rating, modifier.padding(start = 6.dp), color = Color.White)
+        Icon(
+            imageVector = Icons.Filled.Star,
+            contentDescription = "Star",
+            tint = Color.White
+        )
+        Text(
+            text = details.imdb_rating,
+            modifier.padding(start = 6.dp),
+            color = Color.White
+        )
         Spacer(modifier = modifier.width(25.dp))
         Icon(
             painter = painterResource(id = R.drawable.baseline_access_time_24),
