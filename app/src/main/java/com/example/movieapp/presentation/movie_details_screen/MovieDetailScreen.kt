@@ -48,9 +48,9 @@ fun MovieDetailScreen(
 ) {
 
 
-    movieDetailsViewModel.getDetailId(id)
+    movieDetailsViewModel.getMovieDetailId(id)
     Log.d("id:",id.toString())
-    val state = movieDetailsViewModel.state
+    val state = movieDetailsViewModel.movieDetailRepsonse.value
     val details = state.detailsData
     Log.d("details:",details.toString())
 

@@ -1,6 +1,7 @@
 package com.example.movieapp.presentation.movie_list_screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -47,6 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.movieapp.domain.model.Data
+import com.example.movieapp.domain.model.MoviesList
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -55,7 +57,8 @@ fun MovieListScreen(
     movieListViewModel: MovieListViewModel = hiltViewModel()
 ) {
 
-    val state = movieListViewModel.state
+    movieListViewModel.getMovieList(1)
+    val state = movieListViewModel.movieListResponse
     Scaffold(
         modifier = Modifier.background(Color.Transparent),
         topBar = {
@@ -69,8 +72,8 @@ fun MovieListScreen(
                     .fillMaxSize()
                     .background(Color.Transparent),
                 content = {
-                    items(state.movies.size) {
-                        MovieItemUi(itemIndex = it, movieList = state.movies,navController)
+                    items(state.value.movies.data.size) {
+                        MovieItemUi(itemIndex = it, movieList = state.value.movies,navController)
                     }
                 }
             )
@@ -81,13 +84,14 @@ fun MovieListScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieItemUi(itemIndex: Int, movieList: List<Data>,navController: NavHostController) {
+fun MovieItemUi(itemIndex: Int, movieList: MoviesList,navController: NavHostController) {
     Card(
         Modifier
             .wrapContentSize()
             .padding(10.dp)
             .clickable {
-                navController.navigate("movie_detail_screen/${movieList[itemIndex].id}")
+                navController.navigate("movie_detail_screen/${movieList.data[itemIndex].id}")
+                Log.d("movielist:","${movieList.data[itemIndex].id}")
             },
         elevation = CardDefaults.cardElevation(8.dp),
     ) {
@@ -98,8 +102,8 @@ fun MovieItemUi(itemIndex: Int, movieList: List<Data>,navController: NavHostCont
         ) {
 
             AsyncImage(
-                model = movieList[itemIndex].poster,
-                contentDescription = movieList[itemIndex].title,
+                model = movieList.data[itemIndex].poster,
+                contentDescription = movieList.data[itemIndex].title,
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(10.dp)),
@@ -113,7 +117,7 @@ fun MovieItemUi(itemIndex: Int, movieList: List<Data>,navController: NavHostCont
                     .padding(6.dp)
             ) {
                 Text(
-                    text = movieList[itemIndex].title,
+                    text = movieList.data[itemIndex].title,
                     modifier = Modifier
                         .fillMaxWidth()
                         .basicMarquee(),
@@ -135,7 +139,7 @@ fun MovieItemUi(itemIndex: Int, movieList: List<Data>,navController: NavHostCont
                     Icon(imageVector = Icons.Rounded.Star, contentDescription = "star")
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
-                        text = movieList[itemIndex].imdb_rating,
+                        text = movieList.data[itemIndex].imdb_rating,
                         textAlign = TextAlign.Start,
                         modifier = Modifier
                             .fillMaxWidth()

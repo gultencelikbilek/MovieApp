@@ -1,6 +1,8 @@
 package com.example.movieapp.presentation.movie_details_screen
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,35 +11,58 @@ import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.usecase.GetMovieDetailsUseCase
 import com.example.movieapp.domain.model.Data
 import com.example.movieapp.domain.model.Details
+import com.example.movieapp.presentation.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
-) :ViewModel(){
+) : ViewModel() {
 
-    var state by mutableStateOf(ScreenState())
-    fun getDetailId(movie_id:Int){
-        viewModelScope.launch {
-            try {
-                val response = getMovieDetailsUseCase.invoke(movie_id)
-                if (response.isSuccessful){
-                    state = state.copy(
-                        detailsData = response.body()!!
+    private val _movieDetailResponse: MutableState<MovieDetailState> = mutableStateOf(MovieDetailState())
+    val movieDetailRepsonse: State<MovieDetailState> = _movieDetailResponse
+
+    fun getMovieDetailId(id:Int) = viewModelScope.launch {
+        val response = getMovieDetailsUseCase.invoke(id).collect(){movieDetailResult ->
+            when(movieDetailResult){
+                is NetworkResult.Error -> {
+                    _movieDetailResponse.value = MovieDetailState(
+                    detailsData = Details(),
+                    isError = "test",
+                    isLoading = false,
+                    isSucces = false
                     )
                 }
-            } catch (e:Exception){
-                Log.d("MovieDetailViewModel:",e.message.toString())
+                is NetworkResult.Loading ->{
+                    _movieDetailResponse.value = MovieDetailState(
+                        detailsData = Details(),
+                        isError = "",
+                        isSucces = false,
+                        isLoading = true
+
+                    )
+                }
+                is NetworkResult.Succes -> {
+                    _movieDetailResponse.value = MovieDetailState(
+                        detailsData = movieDetailResult.data,
+                        isError = "",
+                        isSucces = true,
+                        isLoading = false
+                    )
+                }
             }
         }
-
     }
 }
 
-data class ScreenState(
-    val movies: List<Data> = emptyList(),
-    val page: Int = 1,
-    val detailsData : Details = Details()
+
+data class MovieDetailState(
+    val detailsData: Details = Details(),
+    val isError: String = "",
+    val isSucces: Boolean = false,
+    val isLoading: Boolean = false
 )

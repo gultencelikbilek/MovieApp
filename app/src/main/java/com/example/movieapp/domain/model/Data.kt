@@ -1,12 +1,12 @@
 package com.example.movieapp.domain.model
 
 data class Data(
-    val country: String,
-    val genres: List<String>,
-    val id: Int,
-    val images: List<String>,
-    val imdb_rating: String,
-    val poster: String,
-    val title: String,
-    val year: String
+    val country: String ="",
+    val genres: List<String> = emptyList(),
+    val id: Int = 0,
+    val images: List<String> = emptyList(),
+    val imdb_rating: String = "",
+    val poster: String = "",
+    val title: String = "",
+    val year: String = ""
 )
