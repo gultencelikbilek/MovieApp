@@ -15,8 +15,8 @@ interface MovieApiService {
 
     @GET(Constants.END_POINT)
     suspend fun getMovieList(
-        @Query("page")page : Int
-    ):NetworkResult<MoviesList>
+        @Query("page") page: Int
+    ): NetworkResult<List<Data>>
 
     @GET(Constants.END_POINT_ID)
     suspend fun getMovieDetailId(

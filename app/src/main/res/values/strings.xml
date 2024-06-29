@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="banner_header">Enjoy the world of movies</string>
+    <string name="movie_list_header">Movie List</string>
 </resources>

@@ -7,7 +7,7 @@ import com.example.movieapp.presentation.NetworkResult
 import retrofit2.Response
 
 interface IMovieRepository {
-    suspend fun getMovieList(page:Int) : NetworkResult<MoviesList>
+    suspend fun getMovieList(page:Int) : NetworkResult<List<Data>>
 
     suspend fun getMovieDetailId(id:Int): NetworkResult<Details>
 }

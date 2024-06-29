@@ -10,14 +10,17 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetMovieListUseCase @Inject constructor(private val repositoryImpl: MovieRepositoryImpl) {
-    operator suspend fun invoke(page:Int): Flow<NetworkResult<MoviesList>> = flow {
 
+    suspend operator fun invoke(page: Int): Flow<NetworkResult<List<Data>>> = flow {
         try {
-            emit(NetworkResult.Loading(true))
-            emit(repositoryImpl.getMovieList(page))
-            Log.d("repoimpl:",repositoryImpl.getMovieList(page).toString())
-        }catch (e:Exception){
-           emit(NetworkResult.Error(e.message.toString()))
+            emit(NetworkResult.Loading)
+            val movieList = repositoryImpl.getMovieList(page)
+            emit(movieList)
+            Log.d("GetMovieListUseCase", "Movie list retrieved successfully")
+        } catch (e: Exception) {
+            emit(NetworkResult.Error(e.message ?: "Unknown error"))
+            Log.e("GetMovieListUseCase", "Error retrieving movie list", e)
         }
     }
 }
+

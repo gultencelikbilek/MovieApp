@@ -11,7 +11,7 @@ class GetMovieDetailsUseCase @Inject constructor(private val repositoryImpl: Mov
 
     operator suspend fun invoke(id:Int) : Flow<NetworkResult<Details>>  = flow {
         try {
-            emit(NetworkResult.Loading(true ))
+            emit(NetworkResult.Loading)
             emit(repositoryImpl.getMovieDetailId(id))
 
         }catch (e:Exception){

@@ -1,180 +1,86 @@
 package com.example.movieapp.presentation.movie_list_screen
 
-import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import com.example.movieapp.domain.model.Data
-import com.example.movieapp.domain.model.MoviesList
+import androidx.navigation.compose.rememberNavController
+import com.example.movieapp.presentation.Header
+import com.example.movieapp.presentation.MovieCardComponent
+import com.example.movieapp.presentation.NetworkResult
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MovieListScreen(
-    navController: NavHostController,
+    navHostController: NavHostController,
     movieListViewModel: MovieListViewModel = hiltViewModel()
 ) {
+    val movieState = movieListViewModel.movieListState.value
+    val context = LocalContext.current
 
-    movieListViewModel.getMovieList(1)
-    val state = movieListViewModel.movieListResponse
-    Scaffold(
-        modifier = Modifier.background(Color.Transparent),
-        topBar = {
-            TopBarHeader()
-        },
-        content = { paddingValues ->
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-                    .background(Color.Transparent),
-                content = {
-                    items(state.value.movies.data.size) {
-                        MovieItemUi(itemIndex = it, movieList = state.value.movies,navController)
-                    }
-                }
-            )
-        },
-        containerColor = Color.Transparent
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun MovieItemUi(itemIndex: Int, movieList: MoviesList,navController: NavHostController) {
-    Card(
-        Modifier
-            .wrapContentSize()
-            .padding(10.dp)
-            .clickable {
-                navController.navigate("movie_detail_screen/${movieList.data[itemIndex].id}")
-                Log.d("movielist:","${movieList.data[itemIndex].id}")
-            },
-        elevation = CardDefaults.cardElevation(8.dp),
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-
-            AsyncImage(
-                model = movieList.data[itemIndex].poster,
-                contentDescription = movieList.data[itemIndex].title,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray.copy(.7f))
-                    .padding(6.dp)
-            ) {
-                Text(
-                    text = movieList.data[itemIndex].title,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .basicMarquee(),
-                    textAlign = TextAlign.Center,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    style = TextStyle(
-                        shadow = Shadow(
-                            Color(0xFFFC6603), offset = Offset(1f, 1f), 3f
-
-                        )
-                    )
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    Icon(imageVector = Icons.Rounded.Star, contentDescription = "star")
-                    Spacer(modifier = Modifier.width(15.dp))
-                    Text(
-                        text = movieList.data[itemIndex].imdb_rating,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 8.dp),
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        maxLines = 1
-                    )
-                }
-
+    LaunchedEffect(key1 = movieState) {
+        when (val result = movieState.data) {
+            is NetworkResult.Success -> {
+                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            }
+            is NetworkResult.Error -> {
+                Toast.makeText(context, "Error: ${result.message}", Toast.LENGTH_SHORT).show()
+                Log.d("eerorscreen", result.message ?: "Unknown error")
             }
 
-        }
+            NetworkResult.Loading -> {
 
+                Toast.makeText(context, "Error: ${result}", Toast.LENGTH_SHORT).show()
+            }
+            null -> {
+                Toast.makeText(context, "Error: ${result}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column {
+            Header()
+            if (movieState.data is NetworkResult.Success) {
+                LazyColumn {
+                    when (val data = movieState.data) {
+                        is NetworkResult.Success -> {
+                            items(data.data) { movie ->
+                                MovieCardComponent(movie)
+                            }
+                        }
+                        is NetworkResult.Error -> {
+
+                        }
+                        is NetworkResult.Loading -> {
+                            // Handle loading state if needed
+                        }
+
+                        null -> {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
-fun TopBarHeader() {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Movie App",
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White.copy(0.4f)
-        ),
-        modifier = Modifier.padding(start = 120.dp,end = 110.dp)
-    )
-
+fun MovieListScreenPreview() {
+    // NavHostController'ın mock bir versiyonunu oluşturun
+    val navController = rememberNavController()
+    MovieListScreen(navHostController = navController)
 }
